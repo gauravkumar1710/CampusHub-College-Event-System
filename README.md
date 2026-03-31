@@ -43,7 +43,7 @@ CampusHub/
 
 ### 1. Clone Repository
 ```bash
-git clone 
+git clone https://github.com/gauravkumar1710/CampusHub-College-Event-System.git
 cd campushub
 2. Setup Server
 Install XAMPP (or any PHP server)
