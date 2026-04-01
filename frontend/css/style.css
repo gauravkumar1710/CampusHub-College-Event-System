@@ -4,16 +4,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-    /* Pulse Theme Palette (Light Inversion) */
-    --bg-dark: #FAFAFA;      /* Background */
-    --bg-card: #FFFFFF;      /* Cards */
-    --bg-card-hover: #F4F4F5;
-    --neon-lime: #10B981;    /* Emerald Green */
-    --neon-purple: #4F46E5;  /* Deep Indigo */
-    --text-primary: #18181B; /* Very Dark Grey */
-    --text-muted: #71717A;   /* Muted Grey */
-    --border-dark: rgba(0,0,0,0.08); /* Light borders */
-    --border-blue: rgba(79, 70, 229, 0.3); /* Blue borders */
+    /* Fresh Campus Green + Mint Theme */
+    --bg-dark: #ECFDF5;      /* Mint Background */
+    --bg-card: #FFFFFF;      /* Clean White Cards */
+    --bg-card-hover: #F0FDF4; /* Very Light Green */
+    --neon-lime: #6EE7B7;    /* Secondary Mint */
+    --neon-purple: #10B981;  /* Primary Green (replacing purple) */
+    --text-primary: #065F46; /* Dark Green Text */
+    --text-muted: #047857;   /* Muted Green Text */
+    --border-dark: rgba(6, 95, 70, 0.1); /* Soft green borders */
+    --border-blue: rgba(16, 185, 129, 0.3); /* Primary green borders */
     
     /* Legacy Mapper */
     --primary-blue: var(--neon-purple);
@@ -50,7 +50,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: rgba(79, 70, 229, 0.95) !important; /* Primary Blue instead of Black */
+    background: rgba(16, 185, 129, 0.95) !important; /* Primary Green */
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-blue);
 }
@@ -281,8 +281,10 @@ body {
 }
 
 .event-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) scale(1.02);
     border-color: var(--neon-purple) !important;
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15) !important;
+    z-index: 10;
 }
 
 .card-img-wrap {
@@ -603,3 +605,48 @@ body {
 .search-bar input { color: var(--text-primary); }
 
 .c-table th, .c-table td { border-bottom-color: var(--border-dark); color: var(--text-primary); }
+
+/* =========================================
+   Antigravity Micro-Animations
+   ========================================= */
+@keyframes slideUpFade {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+@keyframes borderGlow {
+    0% { border-color: rgba(16, 185, 129, 0.3); }
+    50% { border-color: rgba(16, 185, 129, 0.8); text-shadow: 0 0 10px rgba(16,185,129,0.3); }
+    100% { border-color: rgba(16, 185, 129, 0.3); }
+}
+
+.animate-slide-up {
+    opacity: 0; 
+    transform: translateY(25px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.animate-slide-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+.stagger-5 { transition-delay: 0.5s; }
+
+.glow-on-hover:hover {
+    animation: borderGlow 2s infinite;
+}
+
+/* Magnetic Button utility */
+.btn-magnetic {
+    transition: transform 0.1s ease-out;
+}

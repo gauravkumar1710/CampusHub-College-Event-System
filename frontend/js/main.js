@@ -79,10 +79,10 @@ function updateDynamicAvatars() {
             roleBadge.style.color = '#F59E0B';
             roleBadge.style.borderColor = '#FDE68A';
         } else {
-            // Student styling is default blue
-            roleBadge.style.background = '#E0E7FF';
-            roleBadge.style.color = '#4F46E5';
-            roleBadge.style.borderColor = '#C7D2FE';
+            // Student styling is default purple
+            roleBadge.style.background = 'rgba(139, 92, 246, 0.1)';
+            roleBadge.style.color = '#8B5CF6';
+            roleBadge.style.borderColor = 'rgba(139, 92, 246, 0.3)';
         }
     }
 

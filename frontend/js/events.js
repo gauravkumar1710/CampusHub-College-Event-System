@@ -31,7 +31,7 @@ async function loadEvents(organizerId = null, containerId = 'allEventsContainer'
                     weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
                 });
                 const isFull = parseInt(event.registered_count) >= parseInt(event.capacity);
-                const imageUrl = `https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500&q=80&auto=format&fit=crop`; 
+                const imageUrl = event.image_url ? `/${event.image_url}` : `https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500&q=80&auto=format&fit=crop`; 
                 
                 const btnClass = (idx % 2 === 0) ? 'btn-teal' : 'btn-purple-sm';
                 
@@ -100,6 +100,7 @@ async function loadEvents(organizerId = null, containerId = 'allEventsContainer'
                 `;
                 container.appendChild(card);
             });
+            if(typeof observeNewElements === 'function') observeNewElements();
         }
     } catch (err) {
         console.error('Failed to load events:', err);

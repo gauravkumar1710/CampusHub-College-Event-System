@@ -7,30 +7,37 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     initNavbarScrollEffect();
     initRippleEffect();
+    initMagneticButtons();
+    initNumberCounters();
 });
 
 /**
  * Initializes Intersection Observer to fade/slide in elements as they enter the viewport
  */
+let globalScrollObserver = null;
 function initScrollAnimations() {
     const observerOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.15
+        threshold: 0.1
     };
 
-    const observer = new IntersectionObserver((entries, observer) => {
+    globalScrollObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('animate-visible');
+                entry.target.classList.add('visible');
                 observer.unobserve(entry.target); // Only animate once
             }
         });
     }, observerOptions);
 
-    // Select elements to animate
-    const animateElements = document.querySelectorAll('.animate-on-scroll');
-    animateElements.forEach(el => observer.observe(el));
+    observeNewElements();
+}
+
+function observeNewElements() {
+    if (!globalScrollObserver) return;
+    const animateElements = document.querySelectorAll('.animate-slide-up:not(.visible)');
+    animateElements.forEach(el => globalScrollObserver.observe(el));
 }
 
 /**
@@ -111,4 +118,70 @@ function showPremiumToast(type, message) {
         toast.classList.remove('show');
         setTimeout(() => toast.remove(), 400); // match css transition duration
     }, 3500);
+}
+
+/**
+ * Magnetic button interaction
+ */
+function initMagneticButtons() {
+    const buttons = document.querySelectorAll('.btn-magnetic');
+    buttons.forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            // Subtle pull
+            btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+        });
+        
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = `translate(0px, 0px)`;
+        });
+    });
+}
+
+/**
+ * Animated number counters for statistics
+ */
+function initNumberCounters() {
+    const counters = document.querySelectorAll('.stat-num');
+    const speed = 40;
+
+    counters.forEach(counter => {
+        const targetText = counter.innerText.replace(/,/g, '').replace(/%/g, '');
+        const target = parseFloat(targetText);
+        if (isNaN(target)) return;
+
+        const isPercentage = counter.innerText.includes('%');
+        
+        counter.innerText = '0';
+        counter.setAttribute('data-target', target);
+        
+        const updateCount = () => {
+            const finalTarget = parseFloat(counter.getAttribute('data-target'));
+            const count = parseFloat(counter.innerText.replace(/,/g, '').replace(/%/g, ''));
+            
+            const inc = finalTarget / speed;
+            
+            if (count < finalTarget) {
+                let current = count + inc;
+                if (isPercentage) {
+                    counter.innerText = current.toFixed(1) + '%';
+                } else {
+                    counter.innerText = Math.ceil(current).toLocaleString();
+                }
+                setTimeout(updateCount, 25);
+            } else {
+                if (isPercentage) {
+                    counter.innerText = finalTarget.toFixed(1) + '%';
+                } else {
+                    counter.innerText = Math.ceil(finalTarget).toLocaleString();
+                }
+            }
+        };
+
+        // Delay execution to allow slide-up animation entry
+        setTimeout(updateCount, 400);
+    });
 }
